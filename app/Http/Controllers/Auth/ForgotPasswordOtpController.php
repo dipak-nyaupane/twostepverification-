@@ -10,38 +10,28 @@ use App\Mail\OTPMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Redirect;
 
 class ForgotPasswordOtpController extends Controller
 {
-    /**
-     * Show the form for entering OTP.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function showForgotPasswordVerificationForm()
     {
         $email = session('email');
         return view('admin.forgot-password_otp', compact('email'));
     }
 
-    /**
-     * Verify the OTP.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function verifyForgotPasswordOTP(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
             'verification_code' => 'required|numeric'
+        ], [
+            'verification_code.required' => 'The verification code field is required.',
+            'verification_code.numeric' => 'The verification code must be a number.',
         ]);
 
         $email = $request->input('email');
-    $otp = $request->input('verification_code');
+        $otp = $request->input('verification_code');
 
-        // Verify OTP
         $token = DB::table('password_reset_tokens')
             ->where('email', $email)
             ->where('token', $otp)
@@ -49,25 +39,22 @@ class ForgotPasswordOtpController extends Controller
             ->first();
 
         if (!$token) {
-            return back()->withErrors(['otp' => 'Invalid OTP or OTP expired.']);
+            $request->session()->put('email', $email);
+            return back()->withErrors(['verification_code' => 'Invalid OTP or OTP expired.'])->withInput();
         }
 
-        // OTP is valid, redirect to reset password form
-        return redirect()->route('password.reset', ['email' => $email]);
+        $request->session()->put('email', $email);
+        $request->session()->put('token', $token->token);
+
+        return redirect()->route('password.update.form');
     }
 
-    /**
-     * Resend OTP.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function resendForgotPasswordOTP(Request $request)
     {
         $request->validate(['email' => 'required|email']);
 
         $email = $request->email;
-        $otp = mt_rand(100000, 999999); // Generate OTP
+        $otp = mt_rand(100000, 999999);
 
         DB::table('password_reset_tokens')
             ->updateOrInsert(
@@ -75,9 +62,29 @@ class ForgotPasswordOtpController extends Controller
                 ['token' => $otp, 'created_at' => now()]
             );
 
-        // Send OTP to the user's email
         Mail::to($email)->send(new OTPMail($otp, 'forgot_password'));
 
         return back()->with('message', 'OTP resent successfully.');
+    }
+
+    public function showUpdatePasswordForm(Request $request)
+    {
+        $email = $request->session()->get('email');
+        $token = $request->session()->get('token');
+        return view('admin.update-password', compact('email', 'token'));
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8',
+        ]);
+
+        $user = User::where('email', $request->input('email'))->first();
+        $user->password = bcrypt($request->input('password'));
+        $user->save();
+
+        return redirect()->route('login')->with('status', 'Password updated successfully!');
     }
 }

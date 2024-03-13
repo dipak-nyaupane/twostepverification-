@@ -48,5 +48,16 @@ Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkReques
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 // Routes for forgot password OTP functionality
 Route::get('/forget_password_verification', [ForgotPasswordOtpController::class, 'showForgotPasswordVerificationForm'])->name('password.verification.form');
-Route::post('/forget_password_verification', [ForgotPasswordOtpController::class, 'verifyForgotPasswordOTP'])->name('password.verify');
-Route::post('/forget_password_verification/resend', [ForgotPasswordOtpController::class, 'resendForgotPasswordOTP'])->name('forgot_password_otp.resend');
+ Route::post('/forget_password_verification', [ForgotPasswordOtpController::class, 'verifyForgotPasswordOTP'])->name('password.verify');
+ Route::post('/forget_password_verification/resend', [ForgotPasswordOtpController::class, 'resendForgotPasswordOTP'])->name('forgot_password_otp.resend');
+// //Update Password
+
+
+// Route::post('/update-password', [ForgotPasswordOtpController::class, 'showUpdatePasswordForm'])->name('password.update.form');
+
+
+
+Route::get('/reset-password', [ForgotPasswordOtpController::class, 'showUpdatePasswordForm'])->name('password.update.form');
+Route::post('/reset-password', [ForgotPasswordOtpController::class, 'verifyForgotPasswordOTP'])->name('password.verify.otp');
+Route::post('/resend-otp', [ForgotPasswordOtpController::class, 'resendForgotPasswordOTP'])->name('password.resend.otp');
+Route::post('/update-password', [ForgotPasswordOtpController::class, 'updatePassword'])->name('password.update');
