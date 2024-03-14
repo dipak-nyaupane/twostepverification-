@@ -22,7 +22,7 @@ class OtpController extends Controller
     // Show OTP verification form
     public function showVerificationForm()
     {
-        return view('admin.two_step_verification'); // Assuming you have a blade view named 'two_step_verification'
+        return view('admin.login.two_step_verification'); // Assuming you have a blade view named 'two_step_verification'
     }
 //erify OTP
     public function verifyOTP(Request $request)

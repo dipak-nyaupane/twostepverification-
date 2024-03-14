@@ -17,7 +17,7 @@ use App\Http\Controllers\Auth\ForgotPasswordOtpController;
 */
 
 Route::get('/', function () {
-    return view('admin.login');
+    return view('admin.login.login');
 
     // routes/web.php
 
@@ -52,10 +52,7 @@ Route::get('/forget_password_verification', [ForgotPasswordOtpController::class,
  Route::post('/forget_password_verification/resend', [ForgotPasswordOtpController::class, 'resendForgotPasswordOTP'])->name('forgot_password_otp.resend');
 // //Update Password
 
-
 // Route::post('/update-password', [ForgotPasswordOtpController::class, 'showUpdatePasswordForm'])->name('password.update.form');
-
-
 
 Route::get('/reset-password', [ForgotPasswordOtpController::class, 'showUpdatePasswordForm'])->name('password.update.form');
 Route::post('/reset-password', [ForgotPasswordOtpController::class, 'verifyForgotPasswordOTP'])->name('password.verify.otp');

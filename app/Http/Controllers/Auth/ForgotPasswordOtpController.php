@@ -16,7 +16,7 @@ class ForgotPasswordOtpController extends Controller
     public function showForgotPasswordVerificationForm()
     {
         $email = session('email');
-        return view('admin.forgot-password_otp', compact('email'));
+        return view('admin.login.forgot-password_otp', compact('email'));
     }
 
     public function verifyForgotPasswordOTP(Request $request)
@@ -71,7 +71,7 @@ class ForgotPasswordOtpController extends Controller
     {
         $email = $request->session()->get('email');
         $token = $request->session()->get('token');
-        return view('admin.update-password', compact('email', 'token'));
+        return view('admin.login.update-password', compact('email', 'token'));
     }
 
     public function updatePassword(Request $request)

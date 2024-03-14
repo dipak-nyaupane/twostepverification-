@@ -18,7 +18,7 @@ class ForgotPasswordController extends Controller
     //
     public function showLinkRequestForm()
     {
-        return view('admin.forgot-password');
+        return view('admin.login.forgot-password');
     }
 
 

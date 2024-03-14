@@ -9,7 +9,7 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('admin.login');
+        return view('admin.login.login');
     }
 
     public function login(Request $request)
@@ -32,7 +32,7 @@ class AuthController extends Controller
 
     public function showTwoStepVerificationForm()
     {
-        return view('admin.two_step_verification');
+        return view('admin.login.two_step_verification');
     }
 
     public function verifyTwoStepVerification(Request $request)
