@@ -40,7 +40,7 @@ class ForgotPasswordOtpController extends Controller
 
         if (!$token) {
             $request->session()->put('email', $email);
-            return back()->withErrors(['verification_code' => 'Invalid OTP or OTP expired.'])->withInput();
+            return back()->withErrors(['verification_code' => 'Invalid-OTP or OTP has been expired.'])->withInput();
         }
 
         $request->session()->put('email', $email);

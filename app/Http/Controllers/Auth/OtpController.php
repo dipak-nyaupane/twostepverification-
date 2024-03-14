@@ -44,7 +44,7 @@ class OtpController extends Controller
 
         // Verify if OTP has expired
         if (Carbon::parse($otpData->expiry_time)->isPast()) {
-            return back()->withErrors(['otp' => 'OTP has expired. Please request a new one.']);
+            return back()->withErrors(['otp' => 'OTP has been expired. Resend!!']);
         }
 
         $enteredOTP = $request->verification_code;

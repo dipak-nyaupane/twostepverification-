@@ -17,7 +17,7 @@ use App\Http\Controllers\Auth\ForgotPasswordOtpController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('admin.login');
 
     // routes/web.php
 
