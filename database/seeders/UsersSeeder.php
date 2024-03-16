@@ -20,6 +20,12 @@ class UsersSeeder extends Seeder
             'name' => 'Dipak Nyaupane',
             'email' => 'nyaupane04@gmail.com',
             'password' => Hash::make('password'),
+            'username'=>'Dipak',
+            'mobile_number'=>'9861939061',
+            'gender'=>'1',
+            'user_role'=>'1',
+            'address'=>'balaju',
+
         ]);
     }
 }
